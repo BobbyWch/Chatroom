@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Date;
 
-public final class FileList extends JPanel {
+public final class FileList extends JPanel{
     public static FileList obj = null;
 
     public static void init() {
@@ -22,12 +22,11 @@ public final class FileList extends JPanel {
         }
     }
 
-    private final JLabel title = new JLabel("文件");
-    private final JPanel pane = new JPanel(null);
-    private int count = 0;
+    private final ScrollPane pane = new ScrollPane();
 
     private FileList() throws IOException {
         super();
+        JLabel title = new JLabel("文件");
         title.setFont(LocalEnum.FONT_MENU);
         title.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/icon/upload.png")).getScaledInstance(20,20,Image.SCALE_SMOOTH)));
         title.addMouseListener(new MouseAdapter() {
@@ -43,14 +42,10 @@ public final class FileList extends JPanel {
     }
 
     public void addFile(FileInfo info) {
-        System.out.println("add");
         FileButton b = new FileButton(info);
-        b.setBounds(1, count * 22, 50, 20);
-        pane.add(b);
-        repaint();
-        count++;
+        b.setSize(50, 20);
+        pane.addComponent(b);
     }
-
     private static final class FileButton extends JLabel {
         public FileButton(FileInfo file) {
             super(file.name + "   大小：" + file.getLength());
@@ -68,14 +63,13 @@ public final class FileList extends JPanel {
 
     @Override
     public void paint(Graphics g) {
-        pane.setBounds(1, title.getHeight() + 10, getWidth() - 2, getHeight() - title.getHeight() - 2);
-        for (Component c : pane.getComponents()) {
-            c.setSize(getWidth() - 3, 20);
-        }
+//        pane.setBounds(1, title.getHeight() + 10, getWidth() - 2, getHeight() - title.getHeight() - 2);
+//        for (Component c : pane.getComponents()) {
+//            c.setSize(getWidth() - 3, 20);
+//        }
         super.paint(g);
     }
     public void clear(){
         pane.removeAll();
-        count=0;
     }
 }

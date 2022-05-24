@@ -1,13 +1,9 @@
 package cr.ui.comp;
 
-import cr.Main;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 /**
  * @author Bobbywang
@@ -15,14 +11,13 @@ import java.awt.event.WindowEvent;
  */
 public final class MainPanel extends JPanel {
     private final JScrollPane chat=new JScrollPane(ChatArea.getInstance());
-    private final JScrollPane fileBar=new JScrollPane(FileList.obj);
+    private final JPanel fileBar=FileList.obj;
     private final JScrollPane inputPane=new JScrollPane(InputPane.obj);
     private final JScrollPane userList=new JScrollPane(UserList.getInstance().getPanel());
 
     public MainPanel() {
-        super();
+        super(null);
         setBackground(Color.white);
-        setLayout(null);
         add(chat);
         add(inputPane);
         add(fileBar);
