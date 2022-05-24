@@ -9,6 +9,8 @@ public class ScrollPane extends JPanel implements ComponentListener {
     private final JPanel pane = new JPanel(null);
     public ScrollPane() {
         super(null);
+        setBackground(Color.white);
+        pane.setBackground(Color.white);
         add(pane).setBounds(0, 0, getWidth(), 40);
         addComponentListener(this);
         pane.addMouseWheelListener(e -> {
@@ -24,7 +26,18 @@ public class ScrollPane extends JPanel implements ComponentListener {
             }
         });
     }
-
+    public void autoLayout(Component c){
+        int size = pane.getComponentCount();
+        if (size == 1) {
+            c.setBounds(0, 0, pane.getWidth(), c.getHeight());
+        } else {
+            Component last = pane.getComponent(pane.getComponentCount() - 1);
+            c.setBounds(0, last.getY() + last.getHeight(), pane.getWidth(), c.getHeight());
+        }
+        if (c.getY() + c.getHeight() > pane.getHeight()) {
+            pane.setSize(pane.getWidth(), c.getY() + c.getHeight() + 2);
+        }
+    }
     public void addComponent(Component c) {
         int size = pane.getComponentCount();
         if (size == 0) {
@@ -37,10 +50,20 @@ public class ScrollPane extends JPanel implements ComponentListener {
             pane.setSize(pane.getWidth(), c.getY() + c.getHeight() + 2);
         }
     }
+    public void removeComponent(Component c) {
+        if (pane.getComponentCount()==1){
+            pane.remove(c);
+        }else {
+
+        }
+    }
 
     @Override
     public void componentResized(ComponentEvent e) {
-        pane.setBounds(0, pane.getY(), getWidth(), pane.getHeight());
+        pane.setBounds(0, 0, getWidth(), pane.getHeight());
+        for (Component c:pane.getComponents()){
+            c.setSize(pane.getWidth(),c.getHeight());
+        }
     }
 
     @Override
