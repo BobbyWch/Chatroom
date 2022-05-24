@@ -27,11 +27,11 @@ public class ScrollPane extends JPanel implements ComponentListener {
         });
     }
     public void autoLayout(Component c){
-        int size = pane.getComponentCount();
-        if (size == 1) {
+        if (pane.getComponentCount() == 1) {
             c.setBounds(0, 0, pane.getWidth(), c.getHeight());
         } else {
-            Component last = pane.getComponent(pane.getComponentCount() - 1);
+            Component last = pane.getComponent(pane.getComponentZOrder(c)-1);
+            System.out.println(((JLabel) last).getText());
             c.setBounds(0, last.getY() + last.getHeight(), pane.getWidth(), c.getHeight());
         }
         if (c.getY() + c.getHeight() > pane.getHeight()) {
@@ -39,23 +39,19 @@ public class ScrollPane extends JPanel implements ComponentListener {
         }
     }
     public void addComponent(Component c) {
-        int size = pane.getComponentCount();
-        if (size == 0) {
-            pane.add(c).setBounds(0, 0, pane.getWidth(), c.getHeight());
-        } else {
-            Component last = pane.getComponent(pane.getComponentCount() - 1);
-            pane.add(c).setBounds(0, last.getY() + last.getHeight(), pane.getWidth(), c.getHeight());
-        }
-        if (c.getY() + c.getHeight() > pane.getHeight()) {
-            pane.setSize(pane.getWidth(), c.getY() + c.getHeight() + 2);
-        }
+        autoLayout(pane.add(c));
     }
     public void removeComponent(Component c) {
         if (pane.getComponentCount()==1){
             pane.remove(c);
         }else {
-
+            int index=pane.getComponentZOrder(c);
+            pane.remove(index);
+            for (int i=index;i<pane.getComponentCount();i++){
+                autoLayout(pane.getComponent(i));
+            }
         }
+        pane.repaint();
     }
 
     @Override

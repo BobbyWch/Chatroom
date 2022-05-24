@@ -251,7 +251,11 @@ public final class Client implements DocumentCreator {
                         onMessage(m);
                     }
                 }
-            } catch (Exception e) {
+            }catch (OptionalDataException oe){
+                oe.printStackTrace();
+                logger.err(oe);
+                JOptionPane.showMessageDialog(Main.mainFrame,"意外错误！请重启客户端\n"+oe.getMessage());
+            } catch(Exception e) {
                 if (joined) {
                     logger.info("Lost Connection. Try to reconnect.");
                     logger.err(e);

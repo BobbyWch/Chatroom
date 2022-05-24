@@ -23,7 +23,7 @@ public final class FileList extends JPanel implements ComponentListener {
         }
     }
 
-    private final ScrollPane pane = new ScrollPane();
+    public final ScrollPane pane = new ScrollPane();
     private final JLabel title = new JLabel("文件");
 
     private FileList() throws IOException {
@@ -34,6 +34,7 @@ public final class FileList extends JPanel implements ComponentListener {
         title.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
                 if (Client.getClient().isJoined()) {
                     File[] files = IO.openFiles();
                     if (files != null) {
@@ -103,14 +104,17 @@ public final class FileList extends JPanel implements ComponentListener {
             super(file.name + "   大小：" + file.getLength());
             f = file;
             setFont(LocalEnum.FONT_MENU);
-            setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
             setToolTipText("文件名称：" + file.name + "；文件大小：" + file.getLength() + "；上传者：" + file.sender.getName() + "；上传时间：" + String.format("%tT", new Date()));
             addMouseListener(this);
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            Client.getClient().download(f.id);
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                Client.getClient().download(f.id);
+            } else if (e.getButton() == MouseEvent.BUTTON3) {
+                obj.pane.removeComponent(this);
+            }
         }
 
         @Override
