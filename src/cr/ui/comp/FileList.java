@@ -6,6 +6,8 @@ import cr.util.Client;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -25,8 +27,9 @@ public final class FileList extends JPanel{
     private final ScrollPane pane = new ScrollPane();
 
     private FileList() throws IOException {
-        super();
+        super(null);
         JLabel title = new JLabel("文件");
+        title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setFont(LocalEnum.FONT_MENU);
         title.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/icon/upload.png")).getScaledInstance(20,20,Image.SCALE_SMOOTH)));
         title.addMouseListener(new MouseAdapter() {
@@ -36,9 +39,21 @@ public final class FileList extends JPanel{
                     Client.getClient().upload();
             }
         });
-        add(title, BorderLayout.NORTH);
-        add(pane, BorderLayout.CENTER);
-        pane.setBackground(Color.white);
+        add(title);
+        add(pane);
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                title.setBounds(2,0,getWidth()-4,30);
+                pane.setBounds(2,30,getWidth()-4,getHeight()-30);
+            }
+
+            @Override
+            public void componentShown(ComponentEvent e) {
+                componentResized(null);
+            }
+        });
+        pane.setBackground(Color.red);
     }
 
     public void addFile(FileInfo info) {

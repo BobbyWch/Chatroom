@@ -11,6 +11,7 @@ public class ScrollPane extends JPanel {
     public ScrollPane(){
         super(null);
         add(pane).setBounds(0,0,getWidth(),getHeight());
+        pane.setBackground(Color.blue);
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -22,6 +23,7 @@ public class ScrollPane extends JPanel {
 
     public void addComponent(Component c){
         int size=pane.getComponentCount();
+        System.out.println(getBounds());
         if (size==0){
             pane.add(c).setBounds(0,0, pane.getWidth(), c.getHeight());
         }else {
