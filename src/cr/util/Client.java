@@ -206,10 +206,9 @@ public final class Client implements DocumentCreator {
         }
     }
 
-    public void upload() {
-        File file = IO.openFile();
+    public void upload(File file) {
         if (file == null) return;
-        text.appendLine("正在上传，请稍后……", Event.userMsg);
+//        text.appendLine("正在上传，请稍后……", Event.userMsg);
         try (var socket = new Socket(ip, port);
              var fs = new FileInputStream(file)) {
             Connection con = new Connection(socket, LocalEnum.USER_ALL);

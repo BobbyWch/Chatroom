@@ -69,6 +69,18 @@ public final class IO {
             return null;
         }
     }
+    public static File[] openFiles(FileNameExtensionFilter filter){
+        JFileChooser chooser=new JFileChooser();
+        chooser.setDialogTitle("打开");
+        if (filter!=null)
+            chooser.setFileFilter(filter);
+        chooser.setMultiSelectionEnabled(true);
+        if (chooser.showOpenDialog(Main.mainFrame) == JFileChooser.APPROVE_OPTION) {
+            return chooser.getSelectedFiles();
+        }else {
+            return null;
+        }
+    }
     public static File saveFile(FileNameExtensionFilter filter,String filename){
         JFileChooser chooser=new JFileChooser();
         chooser.setDialogTitle("保存");
@@ -84,6 +96,9 @@ public final class IO {
     }
     public static File openFile(){
         return openFile(null);
+    }
+    public static File[] openFiles(){
+        return openFiles(null);
     }
     public static File saveFile(){
         return saveFile(null,null);
