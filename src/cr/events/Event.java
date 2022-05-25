@@ -1,9 +1,9 @@
 package cr.events;
 
-import cr.util.Client;
 import cr.data.ColorDocument;
-import cr.util.Server;
 import cr.tool.Settings;
+import cr.util.Client;
+import cr.util.Server;
 
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;

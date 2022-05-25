@@ -1,9 +1,9 @@
 package cr.events.action;
 
+import cr.data.ColorDocument;
 import cr.events.Event;
 import cr.io.IO;
 import cr.util.Client;
-import cr.data.ColorDocument;
 import cr.util.Server;
 
 import java.io.Serial;

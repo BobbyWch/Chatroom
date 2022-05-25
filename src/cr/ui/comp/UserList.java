@@ -1,8 +1,8 @@
 package cr.ui.comp;
 
 import cr.LocalEnum;
-import cr.ui.popmenu.UserPopMenu;
 import cr.tool.Settings;
+import cr.ui.popmenu.UserPopMenu;
 import cr.util.user.User;
 
 import javax.swing.*;

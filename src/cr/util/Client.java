@@ -1,26 +1,31 @@
 package cr.util;
 
-import cr.*;
+import cr.LocalEnum;
+import cr.Main;
 import cr.data.ColorDocument;
 import cr.data.FileInfo;
-import cr.events.*;
+import cr.events.Ack;
+import cr.events.DownRequest;
+import cr.events.Event;
+import cr.events.Events;
 import cr.events.action.ClearEvent;
 import cr.inter.DocumentCreator;
 import cr.io.Connection;
 import cr.io.IO;
 import cr.tool.Logger;
 import cr.tool.Settings;
+import cr.ui.XMenuBar;
 import cr.ui.comp.ChatArea;
 import cr.ui.comp.FileList;
+import cr.ui.comp.UserList;
 import cr.ui.frame.ImgFrame;
 import cr.ui.frame.MainFrame;
-import cr.ui.comp.UserList;
-import cr.ui.XMenuBar;
 import cr.util.user.User;
 import cr.util.user.UserInfo;
 import cr.util.user.UserManager;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
@@ -89,7 +94,7 @@ public final class Client implements DocumentCreator {
             XMenuBar.flush();
         } catch (IOException e) {
             logger.info("Connect failed.");
-            JOptionPane.showMessageDialog(Main.mainFrame, "连接失败。请检查端口和IP地址，或服务器是否开启。");
+            MainFrame.err("连接失败。请检查端口和IP地址，或服务器是否开启。");
             leave(false);
         }
     }
@@ -152,13 +157,13 @@ public final class Client implements DocumentCreator {
             logger.err(e);
             e.printStackTrace();
         }
-        JOptionPane.showMessageDialog(Main.mainFrame, "更新成功！请重启程序");
+        MainFrame.msg("更新成功！请重启程序");
     }
 
     public void download(int id) {
         FileInfo file = getFile(id);
         if (file == null) {
-            JOptionPane.showMessageDialog(Main.mainFrame, "该文件不存在！:(");
+            MainFrame.msg("该文件不存在！:(");
             return;
         }
         if (file.isImg){
@@ -177,8 +182,7 @@ public final class Client implements DocumentCreator {
                     ioException.printStackTrace();
                 }
             }
-            ImageIcon icon = new ImageIcon(bytes);
-            ImgFrame.showImage(icon.getImage(), e -> {
+            ImgFrame.showImage(Toolkit.getDefaultToolkit().createImage(bytes), e -> {
                 File f = IO.saveFile(null, file.name);
                 if (f == null) return;
                 try (var fs = new FileOutputStream(f);
@@ -254,7 +258,7 @@ public final class Client implements DocumentCreator {
             } catch (OptionalDataException oe) {
                 oe.printStackTrace();
                 logger.err(oe);
-                JOptionPane.showMessageDialog(Main.mainFrame, "意外错误！请重启客户端\n" + oe.getMessage());
+                MainFrame.warn("意外错误！请重启客户端\n" + oe.getMessage());
             } catch (SocketException e) {
                 switch (e.getMessage()) {
                     case "Connection reset" -> {

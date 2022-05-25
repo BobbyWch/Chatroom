@@ -1,8 +1,8 @@
 package cr.events;
 
 import cr.LocalEnum;
-import cr.data.FileInfo;
 import cr.data.ColorDocument;
+import cr.data.FileInfo;
 import cr.events.action.*;
 import cr.util.user.User;
 import cr.util.user.UserInfo;

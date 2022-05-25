@@ -1,8 +1,8 @@
 package cr;
 
-import cr.util.user.UserInfo;
 import cr.tool.Logger;
 import cr.tool.Settings;
+import cr.util.user.UserInfo;
 
 import java.awt.*;
 import java.io.IOException;

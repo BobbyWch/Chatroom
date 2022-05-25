@@ -6,7 +6,10 @@ import cr.io.IO;
 import cr.util.Client;
 import cr.util.Server;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Serial;
 
 public final class DownRequest extends FileEvent {
     @Serial

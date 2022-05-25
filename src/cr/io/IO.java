@@ -2,8 +2,9 @@ package cr.io;
 
 import cr.LocalEnum;
 import cr.Main;
-import cr.util.Client;
 import cr.tool.Settings;
+import cr.ui.frame.MainFrame;
+import cr.util.Client;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -35,7 +36,7 @@ public final class IO {
                 writer.write(newline);
                 writer.write(Client.getClient().getScreen().getText());
                 writer.close();
-                JOptionPane.showMessageDialog(Main.mainFrame, "已导出聊天记录至：\n" + file.getAbsolutePath());
+                MainFrame.msg("已导出聊天记录至：\n" + file.getAbsolutePath());
             }
         } catch (IOException e) {
             e.printStackTrace();

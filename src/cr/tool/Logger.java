@@ -1,6 +1,7 @@
 package cr.tool;
 
 import cr.LocalEnum;
+import cr.ui.frame.MainFrame;
 
 import javax.swing.*;
 import java.io.*;
@@ -75,7 +76,7 @@ public final class Logger {
                 try {
                     Files.move(file3.toPath(), new File(file1.getPath(), "Log1.txt").toPath(), StandardCopyOption.REPLACE_EXISTING);
                 }catch (Exception e){
-                    JOptionPane.showMessageDialog(null,"日志文件被占用！导出日志失败");
+                    MainFrame.err("日志文件被占用！导出日志失败");
                     e.printStackTrace();
                     Runtime.getRuntime().exit(0);
                 }

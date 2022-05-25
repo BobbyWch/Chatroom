@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class ImgFrame extends JFrame {
+public final class ImgFrame extends JFrame {
     private Image img;
     private final ImgPane pane;
     private ImgFrame(Image img, ActionListener onDownload){

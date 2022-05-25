@@ -1,11 +1,11 @@
 package cr.ui.popmenu;
 
 import cr.LocalEnum;
-import cr.io.IO;
-import cr.ui.comp.ChatArea;
-import cr.ui.XMenuBar;
-import cr.util.Client;
 import cr.events.Events;
+import cr.io.IO;
+import cr.ui.XMenuBar;
+import cr.ui.comp.ChatArea;
+import cr.util.Client;
 import cr.util.user.User;
 
 import javax.swing.*;

@@ -1,11 +1,11 @@
 package cr.events.action;
 
+import cr.data.ColorDocument;
 import cr.data.FileInfo;
 import cr.events.Event;
 import cr.io.IO;
 import cr.ui.comp.FileList;
 import cr.util.Client;
-import cr.data.ColorDocument;
 import cr.util.Server;
 import cr.util.user.UserInfo;
 

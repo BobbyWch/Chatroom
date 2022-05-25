@@ -7,12 +7,13 @@ import cr.tool.Settings;
 import cr.ui.comp.ChatArea;
 import cr.ui.comp.FileList;
 import cr.ui.comp.InputPane;
-import cr.ui.frame.MainFrame;
 import cr.ui.comp.UserList;
+import cr.ui.frame.MainFrame;
 import cr.ui.popmenu.ChatPopMenu;
 import cr.ui.popmenu.UserPopMenu;
+import cr.util.Client;
+import cr.util.Server;
 import cr.util.user.User;
-import cr.util.*;
 
 import javax.swing.*;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -84,10 +85,8 @@ public final class Main {
         long endTime = System.currentTimeMillis();
         Logger.getLogger().info("Program starts in " + (endTime - startTime) / 1000.0 + 's' + "  JRE version:" + System.getProperty("java.version"));
         if (!System.getProperty("java.version").startsWith("17")) {
-            JOptionPane.showMessageDialog(null,
-                    "检测到当前运行环境非Java17，可能存在兼容性问题，建议使用Java17运行本程序", "警告", JOptionPane.INFORMATION_MESSAGE);
+            MainFrame.warn("检测到当前运行环境非Java17，可能存在兼容性问题，建议使用Java17运行本程序");
         }
-        System.out.println(System.getProperties());
     }
 
     public static void exit() {

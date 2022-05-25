@@ -1,7 +1,7 @@
 package cr.io;
 
-import cr.inter.InputEvent;
 import cr.LocalEnum;
+import cr.inter.InputEvent;
 import cr.tool.Logger;
 
 import java.io.IOException;

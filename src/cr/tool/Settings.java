@@ -1,8 +1,8 @@
 package cr.tool;
 
 import cr.Main;
-import cr.io.IO;
 import cr.data.MicroRect;
+import cr.io.IO;
 import cr.util.user.User;
 
 import java.io.*;

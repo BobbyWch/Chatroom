@@ -33,7 +33,7 @@ public final class User implements java.io.Serializable {
     private final String outIp = null;
     private static ImageIcon img;
     private static ImageIcon bg;
-    private String sentence;
+    public String sentence;
 
     private User(UserInfo info) {
         this.info = info;

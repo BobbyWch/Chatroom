@@ -23,11 +23,9 @@ public final class Connection {
         this.socket = socket;
         try {
             if (type.equals(LocalEnum.SERVER)) {
-                System.out.println("server");
                 in = new ObjectInputStream(socket.getInputStream());
                 out = new ObjectOutputStream(socket.getOutputStream());
             } else {
-                System.out.println("client");
                 out = new ObjectOutputStream(socket.getOutputStream());
                 in = new ObjectInputStream(socket.getInputStream());
             }

@@ -1,6 +1,7 @@
 package cr.ui;
 
-import cr.*;
+import cr.LocalEnum;
+import cr.Main;
 import cr.events.Events;
 import cr.io.IO;
 import cr.io.Net;
@@ -9,8 +10,9 @@ import cr.tool.Logger;
 import cr.tool.Settings;
 import cr.ui.frame.ConnectFrame;
 import cr.ui.frame.MainFrame;
+import cr.util.Client;
+import cr.util.Server;
 import cr.util.user.User;
-import cr.util.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,30 +59,26 @@ public final class XMenuBar extends JMenuBar {
         menu1.add(disconnect);
         menu1.addSeparator();
         nameItem = create("设置昵称", 'n', e -> {
-            String input;
-            try {
-                input = JOptionPane.showInputDialog(Main.mainFrame, "当前昵称：" + User.getLocalUser().getName() + "\n输入新的昵称：\t\t\t", "设置昵称", JOptionPane.PLAIN_MESSAGE).trim();
-            } catch (NullPointerException e1) {
-                return;
-            }
+            String input=MainFrame.input("输入新的昵称：",User.getLocalUser().getName());
+            if (input==null) return;
             if (input.equals(""))
-                JOptionPane.showMessageDialog(Main.mainFrame, "昵称不能为空！\t\t\t\t", "错误", JOptionPane.ERROR_MESSAGE);
+                MainFrame.err("昵称不能为空！");
             else {
                 User.getLocalUser().setName(input);
-                JOptionPane.showMessageDialog(Main.mainFrame, "您的昵称已改为：" + input);
+                MainFrame.msg("您的昵称已改为：" + input);
                 Logger.getLogger().info("Change name into " + input);
                 Settings.obj.save();
             }
         });
         JMenuItem sentence=create("设置个性签名",'s',e -> {
             if (Client.getClient().isJoined()){
-                JOptionPane.showMessageDialog(Main.mainFrame,"请先退出当前聊天室！");
+                MainFrame.msg("请先退出当前聊天室！");
                 return;
             }
-            String s=JOptionPane.showInputDialog("输入个性签名:");
+            String s=MainFrame.input("输入个性签名:",User.getLocalUser().sentence);
             if (s==null) return;
             User.getLocalUser().setSentence(s);
-            JOptionPane.showMessageDialog(Main.mainFrame,"设置成功！");
+            MainFrame.msg("设置成功！");
         });
         menu1.add(sentence);
         JMenuItem muteItem = createCheckItem("静音", 'm', IO.isMute, e -> IO.isMute = !IO.isMute);
@@ -93,21 +91,21 @@ public final class XMenuBar extends JMenuBar {
         menu1.add((create("清除聊天记录", e -> client.getScreen().setText(null))));
         menu1.add(create("清除所有人聊天纪录", e -> {
             if (User.getLocalUser().getPermission() != LocalEnum.Permission_OWNER) {
-                JOptionPane.showMessageDialog(Main.mainFrame, "你没有权限执行该命令！", "错误", JOptionPane.ERROR_MESSAGE);
+                MainFrame.err("你没有权限执行该命令！");
                 return;
             }
             client.sendMessage(Events.getClear());
         }));
         menu1.addSeparator();
         menu1.add(create("字体大小", e -> {
-            String var = JOptionPane.showInputDialog("当前大小：" + Settings.obj.fontSize + "\n输入字体大小：");
+            String var = MainFrame.input("输入字体大小：",Settings.obj.fontSize);
             if (var == null || var.equals("")) return;
             try {
                 Settings.obj.fontSize = Integer.parseInt(var);
-                JOptionPane.showMessageDialog(Main.mainFrame, "修改成功！请重启程序");
+                MainFrame.msg("修改成功！请重启程序");
                 Settings.obj.save();
             } catch (NumberFormatException e1) {
-                JOptionPane.showMessageDialog(Main.mainFrame, "输入一个整数！", "错误", JOptionPane.ERROR_MESSAGE);
+                MainFrame.err("输入一个整数！");
             }
         }));
         menu1.add(create("个人信息", e -> User.getLocalUser().showFrame()));
@@ -126,10 +124,10 @@ public final class XMenuBar extends JMenuBar {
         menu2.addSeparator();
         menu2.add(create("设置服务器端口", 'p', e -> {
             if (Server.getServer().on) {
-                JOptionPane.showMessageDialog(Main.mainFrame, "你无法在服务器开启时改变端口！", "错误", JOptionPane.ERROR_MESSAGE);
+                MainFrame.err("你无法在服务器开启时改变端口！");
                 return;
             }
-            String input = JOptionPane.showInputDialog(Main.mainFrame, "当前端口：" + Settings.obj.serverPort + "\n输入新的端口号：\t\t\t", "设置端口", JOptionPane.PLAIN_MESSAGE);
+            String input = MainFrame.input( "输入新的端口号：", Settings.obj.serverPort);
             if (input == null)
                 return;
             int port;
@@ -138,14 +136,14 @@ public final class XMenuBar extends JMenuBar {
                 Settings.obj.serverPort = port;
             } catch (IllegalArgumentException e1) {
                 e1.printStackTrace();
-                JOptionPane.showMessageDialog(Main.mainFrame, "非法端口！\t\t\t\t", "错误", JOptionPane.ERROR_MESSAGE);
+                MainFrame.err("非法端口！");
             }
         }));
         menu2.add(create("Remove Ban", e -> {
-            String in = JOptionPane.showInputDialog("输入解封IP：");
+            String in = MainFrame.input("输入解封IP：");
             if (in == null) return;
             Server.getServer().removeBan(in);
-            JOptionPane.showMessageDialog(Main.mainFrame, "已解封");
+            MainFrame.msg("已解封");
         }));
 
         menu5 = new Menu("工具(T)");
@@ -161,7 +159,7 @@ public final class XMenuBar extends JMenuBar {
             try {
                 Runtime.getRuntime().exec("SlideToShutDown");
             } catch (IOException ioException) {
-                JOptionPane.showMessageDialog(Main.mainFrame, "当前系统不支持该功能！");
+                MainFrame.err("当前系统不支持该功能！");
                 ioException.printStackTrace();
                 Logger.getLogger().err(ioException);
             }

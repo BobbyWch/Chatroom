@@ -1,9 +1,9 @@
 package cr.events;
 
 import cr.LocalEnum;
+import cr.data.ColorDocument;
 import cr.io.IO;
 import cr.util.Client;
-import cr.data.ColorDocument;
 import cr.util.Server;
 import cr.util.user.User;
 import cr.util.user.UserInfo;
