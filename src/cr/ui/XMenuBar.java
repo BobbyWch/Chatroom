@@ -78,6 +78,7 @@ public final class XMenuBar extends JMenuBar {
                 return;
             }
             String s=JOptionPane.showInputDialog("输入个性签名:");
+            if (s==null) return;
             User.getLocalUser().setSentence(s);
             JOptionPane.showMessageDialog(Main.mainFrame,"设置成功！");
         });

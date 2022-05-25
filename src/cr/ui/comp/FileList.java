@@ -67,6 +67,7 @@ public final class FileList extends JPanel implements ComponentListener {
         });
         add(title);
         add(pane);
+//        pane.setBgImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\YKJ1\\Desktop\\图片1.png"));
         addComponentListener(this);
     }
 

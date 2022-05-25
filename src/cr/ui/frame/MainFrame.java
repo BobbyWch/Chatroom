@@ -1,6 +1,7 @@
 package cr.ui.frame;
 
 import cr.LocalEnum;
+import cr.Main;
 import cr.data.MicroRect;
 import cr.tool.Logger;
 import cr.tool.Settings;
@@ -121,5 +122,14 @@ public final class MainFrame extends JFrame {
         r.width = container.getWidth();
         r.height = container.getHeight();
         container.setBounds(r);
+    }
+    public static void msg(String s){
+        JOptionPane.showMessageDialog(Main.mainFrame,s,"消息",JOptionPane.INFORMATION_MESSAGE);
+    }
+    public static void warn(String s){
+        JOptionPane.showMessageDialog(Main.mainFrame,s,"警告",JOptionPane.WARNING_MESSAGE);
+    }
+    public static void err(String s){
+        JOptionPane.showMessageDialog(Main.mainFrame,s,"错误",JOptionPane.ERROR_MESSAGE);
     }
 }

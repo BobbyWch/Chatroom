@@ -23,6 +23,7 @@ import cr.util.user.UserManager;
 import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 /**
@@ -188,7 +189,6 @@ public final class Client implements DocumentCreator {
                     ioException.printStackTrace();
                 }
             });
-
         }else {
             File f = IO.saveFile(null, file.name);
             if (f == null) return;
@@ -251,23 +251,30 @@ public final class Client implements DocumentCreator {
                         onMessage(m);
                     }
                 }
-            }catch (OptionalDataException oe){
+            } catch (OptionalDataException oe) {
                 oe.printStackTrace();
                 logger.err(oe);
-                JOptionPane.showMessageDialog(Main.mainFrame,"意外错误！请重启客户端\n"+oe.getMessage());
-            } catch(Exception e) {
-                if (joined) {
-                    logger.info("Lost Connection. Try to reconnect.");
-                    logger.err(e);
-                    leave(false);
-                    join(ip, port);
-                    e.printStackTrace();
-                } else {
-                    if (e.getMessage().equals("Socket closed"))
-                        return;
-                    e.printStackTrace();
-                    logger.err(e);
+                JOptionPane.showMessageDialog(Main.mainFrame, "意外错误！请重启客户端\n" + oe.getMessage());
+            } catch (SocketException e) {
+                switch (e.getMessage()) {
+                    case "Connection reset" -> {
+                        if (joined) {
+                            logger.info("Lost Connection. Try to reconnect.");
+                            logger.err(e);
+                            leave(false);
+                            join(ip, port);
+                            e.printStackTrace();
+                        }
+                    }
+                    case "Socket closed" -> logger.info("Socket closed");
+                    default -> {
+                        e.printStackTrace();
+                        logger.err(e);
+                    }
                 }
+            } catch (Exception ex) {
+                logger.err(ex);
+                ex.printStackTrace();
             }
         }
     };

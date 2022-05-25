@@ -7,10 +7,11 @@ import java.awt.event.ComponentListener;
 
 public class ScrollPane extends JPanel implements ComponentListener {
     private final JPanel pane = new JPanel(null);
+    private Image img=null;
     public ScrollPane() {
         super(null);
         setBackground(Color.white);
-        pane.setBackground(Color.white);
+        pane.setBackground(new Color(0,0,0,0));
         add(pane).setBounds(0, 0, getWidth(), 40);
         addComponentListener(this);
         pane.addMouseWheelListener(e -> {
@@ -26,12 +27,15 @@ public class ScrollPane extends JPanel implements ComponentListener {
             }
         });
     }
+    public void setBgImage(Image img){
+        this.img=img;
+    }
     public void autoLayout(Component c){
-        if (pane.getComponentCount() == 1) {
+        int index=pane.getComponentZOrder(c);
+        if (index == 0) {
             c.setBounds(0, 0, pane.getWidth(), c.getHeight());
         } else {
-            Component last = pane.getComponent(pane.getComponentZOrder(c)-1);
-            System.out.println(((JLabel) last).getText());
+            Component last = pane.getComponent(index-1);
             c.setBounds(0, last.getY() + last.getHeight(), pane.getWidth(), c.getHeight());
         }
         if (c.getY() + c.getHeight() > pane.getHeight()) {
@@ -52,6 +56,11 @@ public class ScrollPane extends JPanel implements ComponentListener {
             }
         }
         pane.repaint();
+    }
+    @Override
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        if (img!=null) g.drawImage(img,0,0,getWidth(),getHeight(),this);
     }
 
     @Override
