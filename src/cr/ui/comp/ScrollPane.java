@@ -1,5 +1,8 @@
 package cr.ui.comp;
 
+import cr.LocalEnum;
+import cr.util.user.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
@@ -14,7 +17,9 @@ public class ScrollPane extends JPanel implements ComponentListener {
 //        setBackground(Color.red);
 //        setBackground(Color.blue);
         setBackground(Color.white);
-        pane.setBackground(new Color(0, 0, 0, 0));
+
+//        pane.setBackground(LocalEnum.blank);
+        pane.setOpaque(false);
         add(pane).setBounds(0, 0, getWidth(), 40);
         addComponentListener(this);
         pane.addMouseWheelListener(e -> {

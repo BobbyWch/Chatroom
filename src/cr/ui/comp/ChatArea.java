@@ -6,6 +6,7 @@ import cr.util.Client;
 
 import javax.swing.*;
 import javax.swing.text.StyledEditorKit;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -25,12 +26,16 @@ public final class ChatArea extends JEditorPane {
         System.out.println("ChatArea init:"+(System.currentTimeMillis()-t)+"ms");
     }
 
+    private Image bg=null;
+
     private ChatArea() {
         super();
         setEditorKit(new StyledEditorKit());
         setDocument(Client.getClient().getDocument());
         setEditable(false);
         setBorder(null);
+        setOpaque(false);
+        setBgImage(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/img/UserBg.jpg")));
         setFont(LocalEnum.FONT_MENU);
         Client.getClient().setScreen(this);
         addMouseListener(new MouseAdapter() {
@@ -41,7 +46,19 @@ public final class ChatArea extends JEditorPane {
                 }
             }
         });
+        setBgImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\微笑照\\IMG_005.jpg"));
     }
+    public void setBgImage(Image img){
+        this.bg=img;
+        if (isVisible()) repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        if (bg!=null) g.drawImage(bg,0,0,getWidth(),getHeight(),this);
+        super.paintComponent(g);
+    }
+
     public void roll(){
         setCaretPosition(getDocument().getLength());
     }

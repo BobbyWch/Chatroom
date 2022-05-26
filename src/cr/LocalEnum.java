@@ -29,6 +29,8 @@ public final class LocalEnum {
     public static String IP;
     public static InetAddress liveAd;
 
+    public static final Color blank=new Color(0,0,0,0);
+
     static {
         try {
             IP = InetAddress.getLocalHost().getHostAddress();

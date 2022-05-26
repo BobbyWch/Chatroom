@@ -68,6 +68,7 @@ public final class FileList extends JPanel implements ComponentListener {
         add(title);
         add(pane);
         addComponentListener(this);
+        pane.setBgImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\微笑照\\IMG_013.jpg"));
     }
 
     public void addFile(FileInfo info) {
@@ -104,6 +105,8 @@ public final class FileList extends JPanel implements ComponentListener {
             super(file.name + "   大小：" + file.getLength());
             f = file;
             setFont(LocalEnum.FONT_MENU);
+//            setBackground(LocalEnum.blank);
+            setOpaque(false);
             setToolTipText("文件名称：" + file.name + "；文件大小：" + file.getLength() + "；上传者：" + file.sender.getName() + "；上传时间：" + String.format("%tT", new Date()));
             addMouseListener(this);
         }

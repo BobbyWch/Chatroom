@@ -5,6 +5,7 @@ import cr.util.Client;
 
 import javax.swing.*;
 import javax.swing.text.StyledEditorKit;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -15,10 +16,12 @@ public final class InputPane extends JEditorPane {
         obj = new InputPane();
     }
 
+    private Image bg=null;
     private InputPane() {
         super();
         StyledEditorKit kit = new StyledEditorKit();
         setEditorKit(kit);
+        setOpaque(false);
         setDocument(kit.createDefaultDocument());
         setFont(LocalEnum.FONT_MENU);
         addKeyListener(new KeyAdapter() {
@@ -38,5 +41,15 @@ public final class InputPane extends JEditorPane {
                 }
             }
         });
+        setBgImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\微笑照\\872CD08C76929651F8E9971588D50A50.jpg"));
+    }
+    public void setBgImage(Image img){
+        this.bg=img;
+        if (isVisible()) repaint();
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        if (bg!=null) g.drawImage(bg,0,0,getWidth(),getHeight(),this);
+        super.paintComponent(g);
     }
 }
