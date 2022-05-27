@@ -1,6 +1,7 @@
 package cr.ui.comp;
 
 import cr.LocalEnum;
+import cr.io.IO;
 import cr.ui.popmenu.ChatPopMenu;
 import cr.util.Client;
 
@@ -35,7 +36,6 @@ public final class ChatArea extends JEditorPane {
         setEditable(false);
         setBorder(null);
         setOpaque(false);
-        setBgImage(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/img/UserBg.jpg")));
         setFont(LocalEnum.FONT_MENU);
         Client.getClient().setScreen(this);
         addMouseListener(new MouseAdapter() {
@@ -46,7 +46,7 @@ public final class ChatArea extends JEditorPane {
                 }
             }
         });
-        setBgImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\微笑照\\IMG_005.jpg"));
+//        setBgImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\微笑照\\IMG_005.jpg"));
     }
     public void setBgImage(Image img){
         this.bg=img;

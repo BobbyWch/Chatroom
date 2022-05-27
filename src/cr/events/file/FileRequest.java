@@ -1,4 +1,4 @@
-package cr.events.action;
+package cr.events.file;
 
 import cr.events.Events;
 import cr.util.Client;
@@ -26,12 +26,8 @@ public final class FileRequest extends FileEvent {
     @Override
     public void server(Server svr, Server.Listener l) throws IOException {
         fileInfo.writeCache(l.con.getSocket().getInputStream());
-//        var os = new FileOutputStream(file1);
         svr.files.add(fileInfo);
-//        InputStream is = l.con.getSocket().getInputStream();
-//        IO.outPutInput(is, os);
         svr.sendMessage(Events.getFileEvent(fileInfo));
         l.clear();
-//        os.close();
     }
 }

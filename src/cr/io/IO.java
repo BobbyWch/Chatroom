@@ -12,6 +12,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Date;
 
 /**
@@ -110,5 +111,9 @@ public final class IO {
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+    private static final ClassLoader loader=IO.class.getClassLoader();
+    public static URL urlOfRes(String path){
+        return loader.getResource(path);
     }
 }

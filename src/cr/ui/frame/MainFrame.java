@@ -2,6 +2,7 @@ package cr.ui.frame;
 
 import cr.LocalEnum;
 import cr.data.MicroRect;
+import cr.io.IO;
 import cr.tool.Logger;
 import cr.tool.Settings;
 import cr.ui.XMenuBar;
@@ -23,7 +24,7 @@ public final class MainFrame extends JFrame {
     public static MainFrame obj = null;
     private TrayIcon trayIcon;
     public final MainPanel panel;
-    private final Image trayImage = Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/img/TrayIcon.png"));
+    private final Image trayImage = Toolkit.getDefaultToolkit().getImage(IO.urlOfRes("res/img/TrayIcon.png"));
     private final Image blankImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
 
     public static boolean hasMessage = false;
@@ -41,7 +42,7 @@ public final class MainFrame extends JFrame {
 
     private MainFrame() throws Exception {
         super(LocalEnum.TITTLE);
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/img/Img.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(IO.urlOfRes("res/img/Img.png")));
 //        init frame size
         MicroRect rect = Settings.obj.mainFrame;
         if (rect != null) {
@@ -136,5 +137,8 @@ public final class MainFrame extends JFrame {
     }
     public static String input(String s,Object defaultValue){
         return JOptionPane.showInputDialog(obj,s,defaultValue);
+    }
+    public static boolean confirm(String s){
+        return JOptionPane.showConfirmDialog(obj,s,"Are you sure?",JOptionPane.OK_CANCEL_OPTION)==JOptionPane.OK_OPTION;
     }
 }

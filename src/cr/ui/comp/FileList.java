@@ -2,8 +2,11 @@ package cr.ui.comp;
 
 import cr.LocalEnum;
 import cr.data.FileInfo;
+import cr.events.file.DeleteEvent;
 import cr.io.IO;
+import cr.ui.frame.MainFrame;
 import cr.util.Client;
+import cr.util.user.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +14,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 
 public final class FileList extends JPanel implements ComponentListener {
     public static FileList obj = null;
@@ -22,6 +26,7 @@ public final class FileList extends JPanel implements ComponentListener {
             e.printStackTrace();
         }
     }
+//    private final HashMap<FileInfo,FileButton> map=new HashMap<>();
 
     public final ScrollPane pane = new ScrollPane();
     private final JLabel title = new JLabel("文件");
@@ -30,7 +35,7 @@ public final class FileList extends JPanel implements ComponentListener {
         super(null);
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setFont(LocalEnum.FONT_MENU);
-        title.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("res/icon/upload.png")).getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
+        title.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(IO.urlOfRes("res/icon/upload.png")).getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
         title.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -68,13 +73,24 @@ public final class FileList extends JPanel implements ComponentListener {
         add(title);
         add(pane);
         addComponentListener(this);
-        pane.setBgImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\微笑照\\IMG_013.jpg"));
+//        pane.setBgImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\微笑照\\IMG_013.jpg"));
     }
 
     public void addFile(FileInfo info) {
         FileButton b = new FileButton(info);
         b.setSize(50, 20);
         pane.addComponent(b);
+    }
+    public void removeFile(FileInfo info){
+        for (Component c:pane.getComponents()){
+            if (c instanceof FileButton b){
+                if (b.f.equals(info)) {
+                    pane.removeComponent(b);
+                    pane.repaint();
+                }
+            }
+        }
+
     }
 
     @Override
@@ -99,13 +115,11 @@ public final class FileList extends JPanel implements ComponentListener {
     }
 
     private static final class FileButton extends JLabel implements MouseListener {
-        private final FileInfo f;
-
+        public final FileInfo f;
         public FileButton(FileInfo file) {
             super(file.name + "   大小：" + file.getLength());
             f = file;
             setFont(LocalEnum.FONT_MENU);
-//            setBackground(LocalEnum.blank);
             setOpaque(false);
             setToolTipText("文件名称：" + file.name + "；文件大小：" + file.getLength() + "；上传者：" + file.sender.getName() + "；上传时间：" + String.format("%tT", new Date()));
             addMouseListener(this);
@@ -116,7 +130,11 @@ public final class FileList extends JPanel implements ComponentListener {
             if (e.getButton() == MouseEvent.BUTTON1) {
                 Client.getClient().download(f.id);
             } else if (e.getButton() == MouseEvent.BUTTON3) {
-                obj.pane.removeComponent(this);
+                if (User.getLocalUser().getPermission()==LocalEnum.Permission_OWNER) {
+                    if (MainFrame.confirm("确定要删除该文件吗？")) {
+                        Client.getClient().sendMessage(new DeleteEvent(f));
+                    }
+                }
             }
         }
 

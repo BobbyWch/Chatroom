@@ -1,4 +1,4 @@
-package cr.events.action;
+package cr.events.file;
 
 import cr.data.ColorDocument;
 import cr.data.FileInfo;

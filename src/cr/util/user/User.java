@@ -2,6 +2,7 @@ package cr.util.user;
 
 import cr.LocalEnum;
 import cr.Main;
+import cr.io.IO;
 import cr.tool.Settings;
 import cr.ui.frame.MainFrame;
 import cr.util.Client;
@@ -42,8 +43,8 @@ public final class User implements java.io.Serializable {
     }
 
     private static void loadImg() {
-        bg = new ImageIcon(User.class.getClassLoader().getResource("res/img/UserBg.jpg"));
-        img = new ImageIcon(User.class.getClassLoader().getResource("res/img/User.jpg"));
+        bg = new ImageIcon(IO.urlOfRes("res/img/UserBg.jpg"));
+        img = new ImageIcon(IO.urlOfRes("res/img/User.jpg"));
     }
 
     private static void unloadImg() {

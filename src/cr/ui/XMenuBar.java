@@ -30,6 +30,7 @@ public final class XMenuBar extends JMenuBar {
 
     public final JMenu menu1;
     public final JMenu menu2;
+    public final JMenu menu3;
     public final JMenu menu5;
     public final JMenu menu6;
     public final JMenu menuPlugin;
@@ -42,7 +43,7 @@ public final class XMenuBar extends JMenuBar {
     private final Client client = Client.getClient();
 
     private XMenuBar() {
-        menu1 = new Menu("客户端(C)") {
+        menu1 = new Menu("客户端(C)",'c') {
             @Override
             public void paint(Graphics g) {
                 nameItem.setEnabled(!client.isJoined());
@@ -109,7 +110,7 @@ public final class XMenuBar extends JMenuBar {
             }
         }));
         menu1.add(create("个人信息", e -> User.getLocalUser().showFrame()));
-        menu2 = new Menu("服务器(S)") {
+        menu2 = new Menu("服务器(S)",'s') {
             @Override
             public void paint(Graphics g) {
                 startItem.setEnabled(!Server.getServer().on);
@@ -146,16 +147,16 @@ public final class XMenuBar extends JMenuBar {
             MainFrame.msg("已解封");
         }));
 
-        menu5 = new Menu("工具(T)");
-        menu5.add(create("Fuck极域", e -> {
+        menu3 = new Menu("工具(T)",'t');
+        menu3.add(create("Fuck极域", e -> {
             try {
                 Runtime.getRuntime().exec("taskkill /f /im studentmain.exe");
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
         }));
-        menu5.add(create("检查更新",e -> new ConnectFrame("下载", source -> Client.getClient().update((String) source[0], (Integer) source[1])).setVisible(true)));
-        menu5.add(create("滑动关机（Windows10）", e -> {
+        menu3.add(create("检查更新", e -> new ConnectFrame("下载", source -> Client.getClient().update((String) source[0], (Integer) source[1])).setVisible(true)));
+        menu3.add(create("滑动关机（Windows10）", e -> {
             try {
                 Runtime.getRuntime().exec("SlideToShutDown");
             } catch (IOException ioException) {
@@ -164,8 +165,8 @@ public final class XMenuBar extends JMenuBar {
                 Logger.getLogger().err(ioException);
             }
         }));
-        menu5.addSeparator();
-        menu5.add(create("查看日志", e -> {
+        menu3.addSeparator();
+        menu3.add(create("查看日志", e -> {
             JFrame frame = new JFrame("日志");
             frame.setSize(800, 500);
             MainFrame.putMiddle(frame);
@@ -185,7 +186,7 @@ public final class XMenuBar extends JMenuBar {
             });
             frame.setVisible(true);
         }));
-        menu5.add(create("清理内存", e -> System.gc()));
+        menu3.add(create("清理内存", e -> System.gc()));
 //        menu5.add(create("Dll Loader",e -> {
 //            File file=IO.openFile(new FileNameExtensionFilter("DLL(*.dll)","dll"));
 //            if (file==null)
@@ -201,21 +202,18 @@ public final class XMenuBar extends JMenuBar {
 //                case 2 -> JOptionPane.showMessageDialog(Main.mainFrame, "部分函数加载失败");
 //            }
 //        }));
-        menuPlugin=new Menu("插件(P)");
+        menuPlugin=new Menu("插件(P)",'p');
         menuPlugin.add(create("插件管理器",'m',e -> PluginManager.showDialog()));
         menuPlugin.addSeparator();
-        menu6=new JMenu("关于(A)");
-        menu6.add(create("Github仓库",e -> IO.openHttp("https://github.com/BobbyWch/Chatroom/tree/java")));
-        menu6.add(create("Github中国",e -> IO.openHttp("https://hub.fastgit.xyz/BobbyWch/Chatroom/tree/java")));
-        menu6.add(create("进入官网",e -> IO.openHttp("http://bobbyschatroom.top/")));
-        menu1.setMnemonic('c');
-        menu2.setMnemonic('s');
-        menu5.setMnemonic('T');
-        menuPlugin.setMnemonic('p');
-        menu6.setMnemonic('a');
+        menu5=new Menu("背景(B)",'b');
+        menu5=new Menu("")
+        menu6 =new Menu("关于(A)",'a');
+        menu6.add(create("Github仓库", e -> IO.openHttp("https://github.com/BobbyWch/Chatroom/tree/java")));
+        menu6.add(create("Github中国", e -> IO.openHttp("https://hub.fastgit.xyz/BobbyWch/Chatroom/tree/java")));
+        menu6.add(create("进入官网", e -> IO.openHttp("http://bobbyschatroom.top/")));
         add(menu1);
         add(menu2);
-        add(menu5);
+        add(menu3);
         add(menuPlugin);
         add(menu6);
     }
@@ -262,9 +260,10 @@ public final class XMenuBar extends JMenuBar {
     }
 
     public static class Menu extends JMenu {
-        public Menu(String name) {
+        public Menu(String name,char c) {
             super(name);
             setFont(LocalEnum.FONT_MENU);
+            setMnemonic(c);
         }
     }
 }

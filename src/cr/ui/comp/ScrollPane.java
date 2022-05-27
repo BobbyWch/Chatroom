@@ -17,8 +17,6 @@ public class ScrollPane extends JPanel implements ComponentListener {
 //        setBackground(Color.red);
 //        setBackground(Color.blue);
         setBackground(Color.white);
-
-//        pane.setBackground(LocalEnum.blank);
         pane.setOpaque(false);
         add(pane).setBounds(0, 0, getWidth(), 40);
         addComponentListener(this);
@@ -38,6 +36,7 @@ public class ScrollPane extends JPanel implements ComponentListener {
 
     public void setBgImage(Image img) {
         this.img = img;
+        if (isVisible()) repaint();
     }
 
     public void autoLayout(Component c) {
@@ -62,7 +61,7 @@ public class ScrollPane extends JPanel implements ComponentListener {
             pane.remove(c);
         } else {
             int index = pane.getComponentZOrder(c);
-            pane.remove(index);
+            if (index!=-1)pane.remove(index);
             for (int i = index; i < pane.getComponentCount(); i++) {
                 autoLayout(pane.getComponent(i));
             }
@@ -78,6 +77,11 @@ public class ScrollPane extends JPanel implements ComponentListener {
         super.paintComponent(g);
         if (img != null) g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
     }
+    @Override
+    public Component[] getComponents(){
+        return pane.getComponents();
+    }
+
 
     @Override
     public void componentResized(ComponentEvent e) {
@@ -93,9 +97,7 @@ public class ScrollPane extends JPanel implements ComponentListener {
     }
 
     @Override
-    public void componentShown(ComponentEvent e) {
-//        pane.repaint();
-    }
+    public void componentShown(ComponentEvent e) {}
 
     @Override
     public void componentHidden(ComponentEvent e) {

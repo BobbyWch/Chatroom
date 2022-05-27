@@ -48,20 +48,19 @@ public final class Client implements DocumentCreator,Runnable {
     public static Client getClient() {
         return instance;
     }
+    public final User user;
+    public final UserInfo userInfo;
+    public final UserList userList = UserList.getInstance();
+    public final ArrayList<FileInfo> files = new ArrayList<>();
+    public final Logger logger = Logger.getLogger();
 
     private String ip = null;
     private int port = -1;
-    public final User user;
-    public final UserInfo userInfo;
     private Connection con = null;
     private boolean joined = false;
     private ChatArea screen;
     private ColorDocument text = new ColorDocument(this);
-    public final Logger logger = Logger.getLogger();
     public UserManager users;
-    public final UserList userList = UserList.getInstance();
-    public final ArrayList<FileInfo> files = new ArrayList<>();
-
     private Thread lisThd = null;
 
     @Override
@@ -89,6 +88,8 @@ public final class Client implements DocumentCreator,Runnable {
             Settings.obj.lastPort = port;
             XMenuBar.flush();
         } catch (IOException e) {
+            e.printStackTrace();
+            logger.err(e);
             logger.info("Connect failed.");
             MainFrame.err("连接失败。请检查端口和IP地址，或服务器是否开启。");
             leave(false);
@@ -110,7 +111,7 @@ public final class Client implements DocumentCreator,Runnable {
 
         files.clear();
         userList.clear();
-        users.clear();
+        if (users!=null)users.clear();
         FileList.obj.clear();
         con = null;
         users=null;

@@ -1,7 +1,7 @@
 package cr.events;
 
 import cr.data.FileInfo;
-import cr.events.action.FileEvent;
+import cr.events.file.FileEvent;
 import cr.io.IO;
 import cr.util.Client;
 import cr.util.Server;

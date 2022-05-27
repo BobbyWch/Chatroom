@@ -41,7 +41,7 @@ public final class InputPane extends JEditorPane {
                 }
             }
         });
-        setBgImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\微笑照\\872CD08C76929651F8E9971588D50A50.jpg"));
+//        setBgImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\微笑照\\872CD08C76929651F8E9971588D50A50.jpg"));
     }
     public void setBgImage(Image img){
         this.bg=img;
