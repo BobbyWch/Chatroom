@@ -6,6 +6,7 @@ import cr.util.Client;
 import cr.data.ColorDocument;
 import cr.util.Server;
 import cr.util.user.UserInfo;
+import jni.NativeFrame;
 
 import java.io.Serial;
 
@@ -26,7 +27,8 @@ public final class WindowEvent extends Event {
             if (!Main.mainFrame.isVisible())
                 Main.mainFrame.setVisible(true);
             Main.executor.execute(() -> {
-                Main.mainFrame.setAlwaysOnTop(true);
+//                Main.mainFrame.setAlwaysOnTop(true);
+                NativeFrame.onTopOnce();
                 int x=Main.mainFrame.getX();
                 int y=Main.mainFrame.getY();
                 try {
@@ -41,6 +43,8 @@ public final class WindowEvent extends Event {
                 }catch (InterruptedException e){
                     e.printStackTrace();
                 }
+                NativeFrame.cancelOnTop();
+                Main.mainFrame.setAlwaysOnTop(true);
                 Main.mainFrame.setAlwaysOnTop(false);
             });
         }

@@ -74,20 +74,20 @@ public class ImgFrame extends JFrame {
                     if (!(e.getX() == p.x && e.getY() == p.y)) {
                         switch (degree) {
                             case 0 -> {
-                                x += e.getX() - p.x;
-                                y += e.getY() - p.y;
+                                x += (e.getX() - p.x)/scale;
+                                y += (e.getY() - p.y)/scale;
                             }
                             case 90 -> {
-                                x += e.getY() - p.y;
-                                y -= e.getX() - p.x;
+                                x += (e.getY() - p.y)/scale;
+                                y -= (e.getX() - p.x)/scale;
                             }
                             case 180 -> {
-                                x -= e.getX() - p.x;
-                                y -= e.getY() - p.y;
+                                x -= (e.getX() - p.x)/scale;
+                                y -= (e.getY() - p.y)/scale;
                             }
                             case 270 -> {
-                                x -= e.getY() - p.y;
-                                y += e.getX() - p.x;
+                                x -= (e.getY() - p.y)/scale;
+                                y += (e.getX() - p.x)/scale;
                             }
                         }
                         p.x=e.getX();
@@ -135,15 +135,14 @@ public class ImgFrame extends JFrame {
             repaint();
         }
         public void autoScale(){
-            ImageIcon i=new ImageIcon(img);
-            double x= ((double) getWidth())/i.getIconWidth();
-            double y= ((double) getHeight())/i.getIconHeight();
+            double x= ((double) getWidth())/img.getWidth(null);
+            double y= ((double) getHeight())/img.getHeight(null);
             scale= Math.min(x, y);
             if (x>y) {
-                this.x = (int) ((getWidth() - i.getIconWidth() * scale) / 2/scale);
+                this.x = (int) ((getWidth() - img.getWidth(null) * scale) / 2/scale);
                 this.y=0;
             } else {
-                this.y = (int) ((getHeight() - i.getIconHeight() * scale) / 2/scale);
+                this.y = (int) ((getHeight() - img.getHeight(null) * scale) / 2/scale);
                 this.x=0;
             }
             repaint();
@@ -155,8 +154,7 @@ public class ImgFrame extends JFrame {
         pane.setImg(img);
     }
     private void resize(){
-        ImageIcon t=new ImageIcon(img);
-        if (t.getIconHeight()>t.getIconWidth()){
+        if (img.getHeight(null)>img.getWidth(null)){
             setSize(550,680);
         }else {
             setSize(680,550);

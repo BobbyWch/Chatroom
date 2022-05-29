@@ -7,16 +7,24 @@ import cr.io.Net;
 import cr.plugin.PluginManager;
 import cr.tool.Logger;
 import cr.tool.Settings;
+import cr.ui.comp.ChatArea;
+import cr.ui.comp.FileList;
+import cr.ui.comp.InputPane;
 import cr.ui.frame.ConnectFrame;
 import cr.ui.frame.MainFrame;
 import cr.util.user.User;
+<<<<<<< Updated upstream
 import cr.util.*;
+=======
+import jni.NativeFrame;
+>>>>>>> Stashed changes
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -48,7 +56,7 @@ public final class XMenuBar extends JMenuBar {
                 super.paint(g);
             }
         };
-        fastItem = create("", 'f', e -> client.join(Settings.obj.lastIP, Settings.obj.lastPort));
+        fastItem = create("",  e -> client.join(Settings.obj.lastIP, Settings.obj.lastPort));
         menu1.add(fastItem);
         flush();
         menu1.add(create("加入聊天室", 'j', e -> new ConnectFrame("加入", source -> Client.getClient().join((String) source[0], (Integer) source[1])).show0()));
@@ -82,10 +90,15 @@ public final class XMenuBar extends JMenuBar {
             JOptionPane.showMessageDialog(Main.mainFrame,"设置成功！");
         });
         menu1.add(sentence);
-        JMenuItem muteItem = createCheckItem("静音", 'm', IO.isMute, e -> IO.isMute = !IO.isMute);
-        menu1.add(muteItem);
-        JMenuItem upItem = createCheckItem("窗口置顶", 'u', false, e -> Main.mainFrame.setAlwaysOnTop(((JCheckBoxMenuItem) e.getSource()).isSelected()));
-        menu1.add(upItem);
+        menu1.add(createCheckItem("静音", 'm', IO.isMute, e -> IO.isMute = !IO.isMute));
+        menu1.add(createCheckItem("窗口置顶", 'u', false, e -> Main.mainFrame.setAlwaysOnTop(((JCheckBoxMenuItem)e.getSource()).isSelected())));
+        menu1.add(createCheckItem("强制窗口置顶",'f',false,e -> {
+            if (NativeFrame.isOnTop()){
+                NativeFrame.stopAlwaysTop();
+            }else {
+                NativeFrame.alwaysOnTop();
+            }
+        }));
         menu1.add(nameItem);
         menu1.addSeparator();
         menu1.add(create("导出聊天记录", e -> IO.backupChat()));
@@ -205,6 +218,7 @@ public final class XMenuBar extends JMenuBar {
         menuPlugin=new Menu("插件(P)");
         menuPlugin.add(create("插件管理器",'m',e -> PluginManager.showDialog()));
         menuPlugin.addSeparator();
+<<<<<<< Updated upstream
         menu6=new JMenu("关于(A)");
         menu6.add(create("Github仓库",e -> IO.openHttp("https://github.com/BobbyWch/Chatroom/tree/java")));
         menu6.add(create("Github中国",e -> IO.openHttp("https://hub.fastgit.xyz/BobbyWch/Chatroom/tree/java")));
@@ -214,21 +228,42 @@ public final class XMenuBar extends JMenuBar {
         menu5.setMnemonic('T');
         menuPlugin.setMnemonic('p');
         menu6.setMnemonic('a');
+=======
+        menu5=new Menu("背景(B)",'b');
+        menu5.add(create("设置聊天背景",e -> ChatArea.getInstance().setBgImage(IO.openImage(),"chat")));
+        menu5.add(create("设置文本框背景",e -> InputPane.obj.setBgImage(IO.openImage(),"input")));
+        menu5.add(create("设置文件列表背景",e -> FileList.obj.setBgImage(IO.openImage(),"file")));
+        menu5.addSeparator();
+        menu5.add(create("如何清除背景？",e->{
+            try {
+                Desktop.getDesktop().open(new File("res/background"));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            MainFrame.msg("在程序安装目录中的\"res/background\"文件夹中找到对应文件删除，然后重启程序");
+        }));
+
+        menu6 =new Menu("关于(A)",'a');
+        menu6.add(create("Github仓库", e -> IO.openHttp("https://github.com/BobbyWch/Chatroom/tree/java")));
+        menu6.add(create("Github中国", e -> IO.openHttp("https://hub.fastgit.xyz/BobbyWch/Chatroom/tree/java")));
+        menu6.add(create("进入官网", e -> IO.openHttp("http://bobbyschatroom.top/")));
+>>>>>>> Stashed changes
         add(menu1);
         add(menu2);
         add(menu5);
         add(menuPlugin);
+        add(menu5);
         add(menu6);
     }
 
     public static void flush() {
         Settings set = Settings.obj;
         if (set.lastIP == null || set.lastPort == -1) {
-            fastItem.setText("快速加入(F)");
+            fastItem.setText("快速加入");
             fastItem.setEnabled(false);
             return;
         }
-        fastItem.setText("快速加入(F)  IP:" + set.lastIP + ":" + set.lastPort);
+        fastItem.setText("快速加入 IP:" + set.lastIP + ":" + set.lastPort);
         fastItem.setEnabled(true);
     }
 

@@ -5,8 +5,10 @@ import cr.tool.Logger;
 import cr.tool.Settings;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Random;
 
 /**
  * @author Bobbywang
@@ -25,7 +27,7 @@ public final class LocalEnum {
     public static Font FONT_MENU=new Font("微软雅黑", Font.PLAIN, Settings.obj.fontSize);
 
     public static String VERSION = "u1.001";
-    public final static String TITTLE = "Chatroom " + VERSION;
+    public final static String TITTLE = "Chatroom " + VERSION + "  id="+new Random().nextInt(1000);
     public static String IP;
     public static InetAddress liveAd;
 

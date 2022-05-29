@@ -7,11 +7,14 @@ import cr.tool.Settings;
 import cr.ui.XMenuBar;
 import cr.ui.comp.MainPanel;
 import cr.ui.popmenu.IconPopMenu;
+import jni.NativeFrame;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
 /**
@@ -59,6 +62,12 @@ public final class MainFrame extends JFrame {
         setJMenuBar(XMenuBar.obj);
         panel = new MainPanel();
         getContentPane().add(panel, BorderLayout.CENTER);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                NativeFrame.init();
+            }
+        });
 //        add trayIcon
         if (SystemTray.isSupported()) {
             trayIcon = new TrayIcon(trayImage, LocalEnum.TITTLE);

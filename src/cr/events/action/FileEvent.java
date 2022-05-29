@@ -39,7 +39,11 @@ public class FileEvent extends Event {
 
     @Override
     public void display(ColorDocument cd) {
-        cd.appendLine(fileInfo.sender.getName() + "上传了文件：" + fileInfo.name, sysMsg);
+        if (fileInfo.isImg) {
+            cd.appendLine(fileInfo.sender.getName() + "上传了图片：" + fileInfo.name, sysMsg);
+        }else {
+            cd.appendLine(fileInfo.sender.getName() + "上传了文件：" + fileInfo.name, sysMsg);
+        }
         IO.playSound();
     }
 }

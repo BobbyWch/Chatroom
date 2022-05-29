@@ -12,7 +12,11 @@ import cr.ui.comp.UserList;
 import cr.ui.popmenu.ChatPopMenu;
 import cr.ui.popmenu.UserPopMenu;
 import cr.util.user.User;
+<<<<<<< Updated upstream
 import cr.util.*;
+=======
+import jni.NativeFrame;
+>>>>>>> Stashed changes
 
 import javax.swing.*;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -80,6 +84,7 @@ public final class Main {
         mainFrame = MainFrame.obj;
         mainFrame.setVisible(true);
         FileInfo.init();
+//        NativeFrame.init();
         PluginManager.init();
         long endTime = System.currentTimeMillis();
         Logger.getLogger().info("Program starts in " + (endTime - startTime) / 1000.0 + 's' + "  JRE version:" + System.getProperty("java.version"));

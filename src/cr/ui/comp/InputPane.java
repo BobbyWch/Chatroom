@@ -1,6 +1,7 @@
 package cr.ui.comp;
 
 import cr.LocalEnum;
+import cr.inter.Background;
 import cr.util.Client;
 
 import javax.swing.*;
@@ -8,19 +9,24 @@ import javax.swing.text.StyledEditorKit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public final class InputPane extends JEditorPane {
+public final class InputPane extends JEditorPane implements Background {
     public static InputPane obj = null;
 
     public static void init() {
         obj = new InputPane();
     }
 
+<<<<<<< Updated upstream
+=======
+    private Image bg;
+>>>>>>> Stashed changes
     private InputPane() {
         super();
         StyledEditorKit kit = new StyledEditorKit();
         setEditorKit(kit);
         setDocument(kit.createDefaultDocument());
         setFont(LocalEnum.FONT_MENU);
+        bg=getBgImage("input");
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -38,5 +44,19 @@ public final class InputPane extends JEditorPane {
                 }
             }
         });
+<<<<<<< Updated upstream
+=======
+//        setBgImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\微笑照\\872CD08C76929651F8E9971588D50A50.jpg"));
+    }
+    @Override
+    public void setBgImage(Image img){
+        this.bg=img;
+        if (isVisible()) repaint();
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        if (bg!=null) g.drawImage(bg,0,0,getWidth(),getHeight(),this);
+        super.paintComponent(g);
+>>>>>>> Stashed changes
     }
 }

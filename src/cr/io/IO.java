@@ -60,7 +60,7 @@ public final class IO {
     }
     public static File openFile(FileNameExtensionFilter filter){
         JFileChooser chooser=new JFileChooser();
-        chooser.setDialogTitle("打开");
+        chooser.setDialogTitle("选择文件");
         if (filter!=null)
             chooser.setFileFilter(filter);
         if (chooser.showOpenDialog(Main.mainFrame) == JFileChooser.APPROVE_OPTION) {
@@ -69,6 +69,31 @@ public final class IO {
             return null;
         }
     }
+<<<<<<< Updated upstream
+=======
+    public static File[] openFiles(FileNameExtensionFilter filter){
+        JFileChooser chooser=new JFileChooser();
+        chooser.setDialogTitle("选择文件(可多选)");
+        if (filter!=null)
+            chooser.setFileFilter(filter);
+        chooser.setMultiSelectionEnabled(true);
+        if (chooser.showOpenDialog(Main.mainFrame) == JFileChooser.APPROVE_OPTION) {
+            return chooser.getSelectedFiles();
+        }else {
+            return null;
+        }
+    }
+    public static File openImage() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("选择图片");
+        chooser.setFileFilter(new FileNameExtensionFilter("图像文件(*.jpg,*.jpeg,*.png,*.bmp,*.wbmp", "jpg", "jpeg", "png", "bmp", "wbmp"));
+        if (chooser.showOpenDialog(Main.mainFrame) == JFileChooser.APPROVE_OPTION) {
+            return chooser.getSelectedFile();
+        } else {
+            return null;
+        }
+    }
+>>>>>>> Stashed changes
     public static File saveFile(FileNameExtensionFilter filter,String filename){
         JFileChooser chooser=new JFileChooser();
         chooser.setDialogTitle("保存");
