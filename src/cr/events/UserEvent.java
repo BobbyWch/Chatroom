@@ -3,7 +3,8 @@ package cr.events;
 import cr.data.ColorDocument;
 import cr.io.IO;
 import cr.tool.Logger;
-import cr.util.*;
+import cr.util.Client;
+import cr.util.Server;
 import cr.util.user.User;
 
 import java.io.Serial;

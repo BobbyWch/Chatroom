@@ -60,7 +60,6 @@ public final class UserManager implements java.io.Serializable{
         admins.add(getByInfo(info));
     }
     public void setDefault(UserInfo info){
-        User user=getByInfo(info);
         admins.remove(getByInfo(info));
     }
     public boolean isOwner(UserInfo user){

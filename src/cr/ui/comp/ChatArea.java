@@ -1,15 +1,13 @@
 package cr.ui.comp;
 
 import cr.LocalEnum;
-<<<<<<< Updated upstream
-=======
 import cr.inter.Background;
->>>>>>> Stashed changes
 import cr.ui.popmenu.ChatPopMenu;
 import cr.util.Client;
 
 import javax.swing.*;
 import javax.swing.text.StyledEditorKit;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -29,17 +27,15 @@ public final class ChatArea extends JEditorPane implements Background {
         System.out.println("ChatArea init:"+(System.currentTimeMillis()-t)+"ms");
     }
 
-<<<<<<< Updated upstream
-=======
     private Image bg;
 
->>>>>>> Stashed changes
     private ChatArea() {
         super();
         setEditorKit(new StyledEditorKit());
         setDocument(Client.getClient().getDocument());
         setEditable(false);
         setBorder(null);
+        setOpaque(false);
         setFont(LocalEnum.FONT_MENU);
         bg=getBgImage("chat");
         Client.getClient().setScreen(this);
@@ -51,16 +47,20 @@ public final class ChatArea extends JEditorPane implements Background {
                 }
             }
         });
-<<<<<<< Updated upstream
-=======
 //        setBgImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\微笑照\\IMG_005.jpg"));
     }
     @Override
     public void setBgImage(Image img){
         this.bg=img;
         if (isVisible()) repaint();
->>>>>>> Stashed changes
     }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        if (bg!=null) g.drawImage(bg,0,0,getWidth(),getHeight(),this);
+        super.paintComponent(g);
+    }
+
     public void roll(){
         setCaretPosition(getDocument().getLength());
     }

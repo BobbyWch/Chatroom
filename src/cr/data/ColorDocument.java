@@ -1,8 +1,8 @@
 package cr.data;
 
 import cr.LocalEnum;
-import cr.events.action.ClearEvent;
 import cr.events.Event;
+import cr.events.action.ClearEvent;
 import cr.inter.DocumentCreator;
 import cr.tool.Settings;
 import cr.util.user.UserInfo;
@@ -29,13 +29,13 @@ public final class ColorDocument extends DefaultStyledDocument implements java.i
 
     private final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public final static SimpleAttributeSet dateStyle=createStyle(true, Color.darkGray, Settings.obj.fontSize);
-    public final static SimpleAttributeSet userDefault=createStyle(true, Color.black, Settings.obj.fontSize + 2);
-    public final static SimpleAttributeSet userAdmin=createStyle(true, new Color(0, 200, 0), Settings.obj.fontSize + 2);
-    public final static SimpleAttributeSet userOwner=createStyle(true, Color.orange, Settings.obj.fontSize + 2);
+    public final static SimpleAttributeSet dateStyle = createStyle(true, Color.darkGray, Settings.obj.fontSize);
+    public final static SimpleAttributeSet userDefault = createStyle(true, Color.black, Settings.obj.fontSize + 2);
+    public final static SimpleAttributeSet userAdmin = createStyle(true, new Color(0, 200, 0), Settings.obj.fontSize + 2);
+    public final static SimpleAttributeSet userOwner = createStyle(true, Color.orange, Settings.obj.fontSize + 2);
 
-    public ColorDocument(DocumentCreator creator){
-        this.creator=creator;
+    public ColorDocument(DocumentCreator creator) {
+        this.creator = creator;
     }
 
     public void appendLine(String text, SimpleAttributeSet style) {
@@ -75,19 +75,20 @@ public final class ColorDocument extends DefaultStyledDocument implements java.i
 
     private long lastTime = 0;
 
-    public void append(UserInfo info){
+    public void append(UserInfo info) {
         switch (manager.getByInfo(info).getPermission()) {
             case LocalEnum.Permission_ADMIN -> append(info.getName() + ">", userAdmin);
             case LocalEnum.Permission_OWNER -> append(info.getName() + ">", userOwner);
             case LocalEnum.Permission_DEFAULT -> append(info.getName() + ">", userDefault);
         }
     }
-    public void append(Event e){
+
+    public void append(Event e) {
         if (e instanceof ClearEvent) {
             creator.clear(e);
             return;
         }
-        Date date=new Date();
+        Date date = new Date();
         if ((date.getTime() - lastTime) >= 180000) {
             appendDate(date);
         }
@@ -98,8 +99,9 @@ public final class ColorDocument extends DefaultStyledDocument implements java.i
     public void setManager(UserManager manager) {
         this.manager = manager;
     }
-    public void reInit(UserManager manager,DocumentCreator creator){
-        this.manager=manager;
-        this.creator=creator;
+
+    public void reInit(UserManager manager, DocumentCreator creator) {
+        this.manager = manager;
+        this.creator = creator;
     }
 }

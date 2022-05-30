@@ -2,8 +2,9 @@ package cr.io;
 
 import cr.LocalEnum;
 import cr.Main;
-import cr.util.Client;
 import cr.tool.Settings;
+import cr.ui.frame.MainFrame;
+import cr.util.Client;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -11,6 +12,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Date;
 
 /**
@@ -35,7 +37,7 @@ public final class IO {
                 writer.write(newline);
                 writer.write(Client.getClient().getScreen().getText());
                 writer.close();
-                JOptionPane.showMessageDialog(Main.mainFrame, "已导出聊天记录至：\n" + file.getAbsolutePath());
+                MainFrame.msg("已导出聊天记录至：\n" + file.getAbsolutePath());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,8 +71,6 @@ public final class IO {
             return null;
         }
     }
-<<<<<<< Updated upstream
-=======
     public static File[] openFiles(FileNameExtensionFilter filter){
         JFileChooser chooser=new JFileChooser();
         chooser.setDialogTitle("选择文件(可多选)");
@@ -93,7 +93,6 @@ public final class IO {
             return null;
         }
     }
->>>>>>> Stashed changes
     public static File saveFile(FileNameExtensionFilter filter,String filename){
         JFileChooser chooser=new JFileChooser();
         chooser.setDialogTitle("保存");
@@ -110,6 +109,9 @@ public final class IO {
     public static File openFile(){
         return openFile(null);
     }
+    public static File[] openFiles(){
+        return openFiles(null);
+    }
     public static File saveFile(){
         return saveFile(null,null);
     }
@@ -119,5 +121,9 @@ public final class IO {
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+    private static final ClassLoader loader=IO.class.getClassLoader();
+    public static URL urlOfRes(String path){
+        return loader.getResource(path);
     }
 }

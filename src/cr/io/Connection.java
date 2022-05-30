@@ -4,7 +4,6 @@ import cr.LocalEnum;
 import cr.events.Event;
 import cr.util.user.UserInfo;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -23,11 +22,9 @@ public final class Connection {
         this.socket = socket;
         try {
             if (type.equals(LocalEnum.SERVER)) {
-                System.out.println("server");
                 in = new ObjectInputStream(socket.getInputStream());
                 out = new ObjectOutputStream(socket.getOutputStream());
             } else {
-                System.out.println("client");
                 out = new ObjectOutputStream(socket.getOutputStream());
                 in = new ObjectInputStream(socket.getInputStream());
             }
@@ -38,21 +35,9 @@ public final class Connection {
 
     public void close() {
         try {
-            close0(in);
-            close0(out);
-            close0(socket);
+            socket.close();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    private void close0(Closeable c) {
-        if (c != null) {
-            try {
-                c.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 

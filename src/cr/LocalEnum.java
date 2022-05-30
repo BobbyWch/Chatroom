@@ -1,8 +1,8 @@
 package cr;
 
-import cr.util.user.UserInfo;
 import cr.tool.Logger;
 import cr.tool.Settings;
+import cr.util.user.UserInfo;
 
 import java.awt.*;
 import java.io.File;
@@ -30,6 +30,8 @@ public final class LocalEnum {
     public final static String TITTLE = "Chatroom " + VERSION + "  id="+new Random().nextInt(1000);
     public static String IP;
     public static InetAddress liveAd;
+
+    public static final Color blank=new Color(0,0,0,0);
 
     static {
         try {

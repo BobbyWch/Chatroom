@@ -6,6 +6,7 @@ import cr.util.user.UserInfo;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public final class FileInfo implements java.io.Serializable {
@@ -39,7 +40,8 @@ public final class FileInfo implements java.io.Serializable {
         this.path = file.getAbsolutePath();
 
         this.filename = format.format(new Date()) + name;
-        isImg = name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".png") || name.endsWith(".bmp") || name.endsWith(".wbmp");
+        String temp=name.toLowerCase(Locale.ROOT);
+        isImg = temp.endsWith(".jpg") || temp.endsWith(".jpeg") || temp.endsWith(".png") || temp.endsWith(".bmp") || temp.endsWith(".wbmp");
         this.id = name.hashCode() * sender.hashCode() * filename.hashCode();
     }
 

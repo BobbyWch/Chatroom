@@ -1,35 +1,37 @@
 package cr.util;
 
-import cr.*;
+import cr.LocalEnum;
+import cr.Main;
 import cr.data.ColorDocument;
 import cr.data.FileInfo;
-import cr.events.*;
+import cr.events.Ack;
+import cr.events.DownRequest;
+import cr.events.Event;
+import cr.events.Events;
 import cr.events.action.ClearEvent;
 import cr.inter.DocumentCreator;
 import cr.io.Connection;
 import cr.io.IO;
-import cr.tool.Logger;
-import cr.tool.Settings;
+import cr.tool.*;
+import cr.ui.XMenuBar;
 import cr.ui.comp.ChatArea;
 import cr.ui.comp.FileList;
+import cr.ui.comp.UserList;
 import cr.ui.frame.ImgFrame;
 import cr.ui.frame.MainFrame;
-import cr.ui.comp.UserList;
-import cr.ui.XMenuBar;
-import cr.util.user.User;
-import cr.util.user.UserInfo;
-import cr.util.user.UserManager;
+import cr.util.user.*;
 
-import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 /**
  * @author Bobbywang
  * @date 2021-10-14 21:23
  */
-public final class Client implements DocumentCreator {
+public final class Client implements DocumentCreator,Runnable {
     private Client() {
         user = User.getLocalUser();
         userInfo = user.getInfo();
@@ -46,20 +48,19 @@ public final class Client implements DocumentCreator {
     public static Client getClient() {
         return instance;
     }
+    public final User user;
+    public final UserInfo userInfo;
+    public final UserList userList = UserList.getInstance();
+    public final ArrayList<FileInfo> files = new ArrayList<>();
+    public final Logger logger = Logger.getLogger();
 
     private String ip = null;
     private int port = -1;
-    public final User user;
-    public final UserInfo userInfo;
     private Connection con = null;
     private boolean joined = false;
     private ChatArea screen;
     private ColorDocument text = new ColorDocument(this);
-    public final Logger logger = Logger.getLogger();
     public UserManager users;
-    public final UserList userList = UserList.getInstance();
-    public final ArrayList<FileInfo> files = new ArrayList<>();
-
     private Thread lisThd = null;
 
     @Override
@@ -73,22 +74,24 @@ public final class Client implements DocumentCreator {
     }
 
     public void join(String ip, int port) {
-        if (joined)
+        if (joined) {
             leave(true);
+        }
         joined = true;
-        UserList.getInstance().clear();
+        userList.clear();
         this.ip = ip;
         this.port = port;
-
         try {
-            Socket socket = new Socket(ip, port);
-            connect(socket);
+            con=getConnection();
+            connect();
             Settings.obj.lastIP = ip;
             Settings.obj.lastPort = port;
             XMenuBar.flush();
         } catch (IOException e) {
+            e.printStackTrace();
+            logger.err(e);
             logger.info("Connect failed.");
-            JOptionPane.showMessageDialog(Main.mainFrame, "连接失败。请检查端口和IP地址，或服务器是否开启。");
+            MainFrame.err("连接失败。请检查端口和IP地址，或服务器是否开启。");
             leave(false);
         }
     }
@@ -98,25 +101,26 @@ public final class Client implements DocumentCreator {
         if (lisThd != null) {
             lisThd = null;
         }
-        if (con != null)
+        if (con != null) {
             con.close();
+        }
         if (bool) {
             logger.info("Leave chat server.");
             text.appendLine("您已离开聊天室", Event.userMsg);
         }
-        UserList.getInstance().clear();
+
         files.clear();
+        userList.clear();
+        if (users!=null)users.clear();
         FileList.obj.clear();
         con = null;
+        users=null;
     }
 
     private void onMessage(Event e) {
         e.client(this);
         text.append(e);
-        if (e instanceof Ack a) {
-            System.out.println(a.dsp);
-        }
-        ChatArea.getInstance().roll();
+        screen.roll();
         checkTray();
     }
 
@@ -137,13 +141,12 @@ public final class Client implements DocumentCreator {
     }
 
     public void update(String ip, int port) {
-
         try {
             Socket socket = new Socket(ip, port);
             Connection con = new Connection(socket, LocalEnum.USER_ALL);
             con.writeMessage(Events.getUpdateReq());
             InputStream is = socket.getInputStream();
-            var fs = new FileOutputStream("prog/ChatRoom.jar");
+            FileOutputStream fs = new FileOutputStream("prog/ChatRoom.jar");
             IO.outPutInput(is, fs);
             socket.close();
             fs.close();
@@ -151,13 +154,13 @@ public final class Client implements DocumentCreator {
             logger.err(e);
             e.printStackTrace();
         }
-        JOptionPane.showMessageDialog(Main.mainFrame, "更新成功！请重启程序");
+        MainFrame.msg("更新成功！请重启程序");
     }
 
     public void download(int id) {
         FileInfo file = getFile(id);
         if (file == null) {
-            JOptionPane.showMessageDialog(Main.mainFrame, "该文件不存在！:(");
+            MainFrame.msg("该文件不存在！:(");
             return;
         }
         if (file.isImg){
@@ -176,8 +179,7 @@ public final class Client implements DocumentCreator {
                     ioException.printStackTrace();
                 }
             }
-            ImageIcon icon = new ImageIcon(bytes);
-            ImgFrame.showImage(icon.getImage(), e -> {
+            ImgFrame.showImage(Toolkit.getDefaultToolkit().createImage(bytes), e -> {
                 File f = IO.saveFile(null, file.name);
                 if (f == null) return;
                 try (var fs = new FileOutputStream(f);
@@ -188,7 +190,6 @@ public final class Client implements DocumentCreator {
                     ioException.printStackTrace();
                 }
             });
-
         }else {
             File f = IO.saveFile(null, file.name);
             if (f == null) return;
@@ -206,12 +207,12 @@ public final class Client implements DocumentCreator {
         }
     }
 
-    public void upload() {
-        File file = IO.openFile();
-        if (file == null) return;
-        text.appendLine("正在上传，请稍后……", Event.userMsg);
-        try (var socket = new Socket(ip, port);
-             var fs = new FileInputStream(file)) {
+    public void upload(File file) {
+        if (file == null) {
+            return;
+        }
+        try (Socket socket = new Socket(ip, port);
+             FileInputStream fs = new FileInputStream(file)) {
             Connection con = new Connection(socket, LocalEnum.USER_ALL);
             con.writeMessage(Events.getFileRequest(file));
             OutputStream os = socket.getOutputStream();
@@ -234,40 +235,14 @@ public final class Client implements DocumentCreator {
         return null;
     }
 
-    private void connect(Socket s) {
-        con = new Connection(s, LocalEnum.USER_ALL);
+    private void connect() {
+//        con = new Connection(s, LocalEnum.USER_ALL);
         if (lisThd == null) {
-            lisThd = new Thread(runnable);
+            lisThd = new Thread(this);
             lisThd.start();
         }
         con.writeMessage(Events.getRequest());
     }
-
-    private final Runnable runnable = () -> {
-        Event m;
-        if (con != null) {
-            try {
-                while (joined) {
-                    if ((m = con.readMessage()) != null) {
-                        onMessage(m);
-                    }
-                }
-            } catch (Exception e) {
-                if (joined) {
-                    logger.info("Lost Connection. Try to reconnect.");
-                    logger.err(e);
-                    leave(false);
-                    join(ip, port);
-                    e.printStackTrace();
-                } else {
-                    if (e.getMessage().equals("Socket closed"))
-                        return;
-                    e.printStackTrace();
-                    logger.err(e);
-                }
-            }
-        }
-    };
 
     private void checkTray() {
         if (!Main.mainFrame.isActive()) {
@@ -288,6 +263,9 @@ public final class Client implements DocumentCreator {
     public void say(String msg, UserInfo recv) {
         sendMessage(Events.getMsg(recv, msg));
     }
+    private Connection getConnection() throws IOException {
+        return new Connection(new Socket(ip,port),LocalEnum.USER_ALL);
+    }
 
     public boolean isJoined() {
         return joined;
@@ -303,5 +281,43 @@ public final class Client implements DocumentCreator {
 
     public ColorDocument getDocument() {
         return text;
+    }
+
+    @Override
+    public void run() {
+        Event m;
+        if (con != null) {
+            try {
+                while (joined) {
+                    if ((m = con.readMessage()) != null) {
+                        onMessage(m);
+                    }
+                }
+            } catch (OptionalDataException oe) {
+                oe.printStackTrace();
+                logger.err(oe);
+                MainFrame.warn("意外错误！请重启客户端\n" + oe.getMessage());
+            } catch (SocketException e) {
+                switch (e.getMessage()) {
+                    case "Connection reset" -> {
+                        if (joined) {
+                            logger.info("Lost Connection. Try to reconnect.");
+                            logger.err(e);
+                            leave(false);
+                            join(ip, port);
+                            e.printStackTrace();
+                        }
+                    }
+                    case "Socket closed" -> logger.info("Socket closed");
+                    default -> {
+                        e.printStackTrace();
+                        logger.err(e);
+                    }
+                }
+            } catch (Exception ex) {
+                logger.err(ex);
+                ex.printStackTrace();
+            }
+        }
     }
 }

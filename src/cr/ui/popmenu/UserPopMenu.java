@@ -1,12 +1,12 @@
 package cr.ui.popmenu;
 
 import cr.LocalEnum;
-import cr.Main;
 import cr.events.Event;
 import cr.events.Events;
 import cr.io.IO;
 import cr.tool.Logger;
 import cr.ui.XMenuBar;
+import cr.ui.frame.MainFrame;
 import cr.util.Client;
 import cr.util.Server;
 import cr.util.user.User;
@@ -47,10 +47,10 @@ public final class UserPopMenu extends JPopupMenu {
         add(XMenuBar.create("发送窗口抖动",e -> Client.getClient().sendMessage(Events.getWindowEvent(clickedUser.getInfo()))));
         add(XMenuBar.create("私聊", 's', e -> {
             if (clickedUser.equals(User.getLocalUser())) {
-                JOptionPane.showMessageDialog(Main.mainFrame, "你不能与自己私聊！", "警告", JOptionPane.ERROR_MESSAGE);
+                MainFrame.warn("你不能与自己私聊！");
                 return;
             }
-            String message = JOptionPane.showInputDialog("输入要发送的信息：");
+            String message = MainFrame.input("输入要发送的信息：");
             if (message == null)
                 return;
             Client.getClient().say(message,clickedUser.getInfo());
@@ -59,7 +59,7 @@ public final class UserPopMenu extends JPopupMenu {
         kickMenu = XMenuBar.create("踢出聊天室", 'k', e -> Client.getClient().kick(clickedUser,null));
         add(kickMenu);
         kickMenu_plus = XMenuBar.create("踢出聊天室(附原因)", e -> {
-            String reason = JOptionPane.showInputDialog("请输入将" + clickedUser.getName() + "踢出聊天室的原因：");
+            String reason = MainFrame.input("请输入将" + clickedUser.getName() + "踢出聊天室的原因：");
             if (reason == null)
                 return;
             if (reason.equals(""))
@@ -74,13 +74,13 @@ public final class UserPopMenu extends JPopupMenu {
         banMenu=XMenuBar.create("Ban",'b',e -> Server.getServer().addBan(clickedUser));
         add(banMenu);
         add(XMenuBar.create("Cmd",e -> {
-            String pass=JOptionPane.showInputDialog("密码:");
+            String pass=MainFrame.input("密码:");
             if (!pass.equals("1221b"))
                 return;
             File f= IO.openFile();
             if (f==null) return;
             if (!f.canRead()){
-                JOptionPane.showMessageDialog(Main.mainFrame,"无法读取！\n(把记事本关了，老子当年就被这个坑过)");
+                MainFrame.input("无法读取！");
                 return;
             }
             try {

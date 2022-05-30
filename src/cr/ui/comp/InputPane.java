@@ -6,6 +6,7 @@ import cr.util.Client;
 
 import javax.swing.*;
 import javax.swing.text.StyledEditorKit;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -16,14 +17,12 @@ public final class InputPane extends JEditorPane implements Background {
         obj = new InputPane();
     }
 
-<<<<<<< Updated upstream
-=======
     private Image bg;
->>>>>>> Stashed changes
     private InputPane() {
         super();
         StyledEditorKit kit = new StyledEditorKit();
         setEditorKit(kit);
+        setOpaque(false);
         setDocument(kit.createDefaultDocument());
         setFont(LocalEnum.FONT_MENU);
         bg=getBgImage("input");
@@ -44,8 +43,6 @@ public final class InputPane extends JEditorPane implements Background {
                 }
             }
         });
-<<<<<<< Updated upstream
-=======
 //        setBgImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\微笑照\\872CD08C76929651F8E9971588D50A50.jpg"));
     }
     @Override
@@ -57,6 +54,5 @@ public final class InputPane extends JEditorPane implements Background {
     protected void paintComponent(Graphics g) {
         if (bg!=null) g.drawImage(bg,0,0,getWidth(),getHeight(),this);
         super.paintComponent(g);
->>>>>>> Stashed changes
     }
 }

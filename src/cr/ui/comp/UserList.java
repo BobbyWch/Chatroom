@@ -1,8 +1,8 @@
 package cr.ui.comp;
 
 import cr.LocalEnum;
-import cr.ui.popmenu.UserPopMenu;
 import cr.tool.Settings;
+import cr.ui.popmenu.UserPopMenu;
 import cr.util.user.User;
 
 import javax.swing.*;
@@ -33,7 +33,6 @@ public final class UserList extends JList<User> {
         super();
         setModel(model);
         setFont(LocalEnum.FONT_MENU.deriveFont((float) Settings.obj.fontSize+1));
-//        setBackground(Color.white);
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         addMouseListener(new MouseAdapter() {
             @Override

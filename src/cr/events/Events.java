@@ -4,6 +4,8 @@ import cr.LocalEnum;
 import cr.data.FileInfo;
 import cr.data.ColorDocument;
 import cr.events.action.*;
+import cr.events.file.FileEvent;
+import cr.events.file.FileRequest;
 import cr.util.user.User;
 import cr.util.user.UserInfo;
 import cr.util.user.UserManager;
