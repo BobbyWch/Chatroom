@@ -25,7 +25,7 @@ public final class InputPane extends JEditorPane implements Background {
         setOpaque(false);
         setDocument(kit.createDefaultDocument());
         setFont(LocalEnum.FONT_MENU);
-        bg=getBgImage("input");
+        flushImage("input");
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {

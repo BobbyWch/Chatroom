@@ -26,7 +26,6 @@ public final class FileList extends JPanel implements ComponentListener, Backgro
             e.printStackTrace();
         }
     }
-//    private final HashMap<FileInfo,FileButton> map=new HashMap<>();
 
     public final ScrollPane pane = new ScrollPane();
     private final JLabel title = new JLabel("文件");
@@ -72,7 +71,7 @@ public final class FileList extends JPanel implements ComponentListener, Backgro
         });
         add(title);
         add(pane);
-        pane.setBgImage(getBgImage("file"));
+        pane.flushImage("file");
         addComponentListener(this);
 //        pane.setBgImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\微笑照\\IMG_013.jpg"));
     }

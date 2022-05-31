@@ -229,6 +229,7 @@ public final class XMenuBar extends JMenuBar {
             MainFrame.msg("在程序安装目录中的\"res/background\"文件夹中找到对应文件删除，然后重启程序");
         }));
 
+
         menu6 =new Menu("关于(A)",'a');
         menu6.add(create("Github仓库", e -> IO.openHttp("https://github.com/BobbyWch/Chatroom/tree/java")));
         menu6.add(create("Github中国", e -> IO.openHttp("https://hub.fastgit.xyz/BobbyWch/Chatroom/tree/java")));

@@ -37,7 +37,7 @@ public final class ChatArea extends JEditorPane implements Background {
         setBorder(null);
         setOpaque(false);
         setFont(LocalEnum.FONT_MENU);
-        bg=getBgImage("chat");
+        flushImage("chat");
         Client.getClient().setScreen(this);
         addMouseListener(new MouseAdapter() {
             @Override

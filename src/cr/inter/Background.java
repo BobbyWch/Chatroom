@@ -22,5 +22,8 @@ public interface Background {
         }
         setBgImage(Toolkit.getDefaultToolkit().getImage(img.getAbsolutePath()));
     }
+    default void flushImage(String n){
+        setBgImage(getBgImage(n));
+    }
     void setBgImage(Image img);
 }
