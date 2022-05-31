@@ -82,7 +82,6 @@ public final class Main {
         mainFrame = MainFrame.obj;
         mainFrame.setVisible(true);
         FileInfo.init();
-        NativeFrame.init();
         PluginManager.init();
         long endTime = System.currentTimeMillis();
         Logger.getLogger().info("Program starts in " + (endTime - startTime) / 1000.0 + 's' + "  JRE version:" + System.getProperty("java.version"));

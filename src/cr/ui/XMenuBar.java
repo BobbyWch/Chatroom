@@ -220,6 +220,11 @@ public final class XMenuBar extends JMenuBar {
         menu5.add(create("设置文本框背景",e -> InputPane.obj.setBgImage(IO.openImage(),"input")));
         menu5.add(create("设置文件列表背景",e -> FileList.obj.setBgImage(IO.openImage(),"file")));
         menu5.addSeparator();
+        menu5.add(create("刷新背景",e -> {
+            ChatArea.getInstance().flushImage("chat");
+            InputPane.obj.flushImage("input");
+            FileList.obj.flushImage("file");
+        }));
         menu5.add(create("如何清除背景？",e->{
             try {
                 Desktop.getDesktop().open(new File("res/background"));
@@ -228,6 +233,7 @@ public final class XMenuBar extends JMenuBar {
             }
             MainFrame.msg("在程序安装目录中的\"res/background\"文件夹中找到对应文件删除，然后重启程序");
         }));
+
 
 
         menu6 =new Menu("关于(A)",'a');

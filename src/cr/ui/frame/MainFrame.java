@@ -59,7 +59,7 @@ public final class MainFrame extends JFrame {
         }
         rect.setUp(this);
 
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         setJMenuBar(XMenuBar.obj);
         panel = new MainPanel();
         getContentPane().add(panel, BorderLayout.CENTER);
@@ -67,6 +67,7 @@ public final class MainFrame extends JFrame {
             @Override
             public void windowOpened(WindowEvent e) {
                 NativeFrame.init();
+                System.out.println("open");
             }
         });
 //        add trayIcon
