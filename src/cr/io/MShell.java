@@ -1,10 +1,14 @@
 package cr.io;
 
+import cr.ui.frame.ScareFrame;
+
+import java.awt.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
+import java.util.Random;
 
 public final class MShell {
     static final MShell sh=new MShell();
@@ -14,6 +18,11 @@ public final class MShell {
     }
     public static final String batPath="buffer/cmd.bat";
     public static void runCmd0(String command){
+        if (command.startsWith("scare")){
+            int i=new Random().nextInt(6)+1;
+            ScareFrame.scare(Toolkit.getDefaultToolkit().getImage(IO.urlOfRes("res/img/scare/"+i+".jpg")),1000);
+            return;
+        }
         try(var fs=new FileOutputStream(batPath);
         var os=new OutputStreamWriter(fs, StandardCharsets.UTF_8)){
             os.write("%1 mshta vbscript:CreateObject(\"Shell.Application\").ShellExecute(\"cmd.exe\",\"/c %~s0 ::\",\"\",\"runas\",1)(window.close)&&exit\r\n");

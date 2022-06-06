@@ -8,38 +8,33 @@ import java.awt.event.*;
 
 public class ScareFrame extends JFrame {
     private Image img;
-    private ScareFrame(Image img){
+
+    private ScareFrame(Image img) {
         super();
-        this.img=img;
+        this.img = img;
         setUndecorated(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds(0,0,d.width,d.height);
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        setBounds(0, 0, d.width, d.height);
         setAlwaysOnTop(true);
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                obj=null;
-            }
-        });
-    }
-    
-    private void setImg(Image img){
-        this.img=img;
-        repaint();
     }
 
     @Override
-    public void paint(Graphics g){
+    public void paint(Graphics g) {
         super.paint(g);
-        g.drawImage(img,0,0,getWidth(),getHeight(),null);
+        g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
     }
 
-    private static ScareFrame obj=null;
-    public static void scare(Image img,int t){
-        if (obj==null) {
-            obj = new ScareFrame(img);
-            obj.setVisible(true);
-        }else obj.setImg(img);
+    public static void scare(Image img, int t) {
+        ScareFrame obj = new ScareFrame(img);
+        obj.setVisible(true);
+        new Thread(() -> {
+            try {
+                Thread.sleep(t);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            obj.setVisible(false);
+        }).start();
     }
 }
